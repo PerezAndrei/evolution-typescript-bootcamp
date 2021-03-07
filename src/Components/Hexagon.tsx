@@ -36,9 +36,9 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                     <text
                         x="50%"
                         y="50%"
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        className="heavy">{this.props.params.value||"00"}</text>
+                        dominantBaseline="middle"
+                        textAnchor="middle"
+                        className="heavy">{this.props.params.value || ""}</text>
                 </svg>
             </div>
         )

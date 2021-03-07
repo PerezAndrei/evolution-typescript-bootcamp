@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import constants from "../Helpers/Constants";
 import * as hexagonCalculateSrv from "../Services/HexagonCalculateSrv";
 import * as hexagonGridCalculateSrv from "../Services/HexagonGridCalculateSrv";
-import { HexagonCoordinates, HexagonParams, HexagonPoints } from "../Types/HexagonTypes";
+import { HexagonCell, HexagonCoordinates, HexagonParams, HexagonPoints } from "../Types/HexagonTypes";
 import { HexagonGridProps } from "../Types/PropsTypes";
 import { HexagonGridState } from "../Types/StateTypes";
 import { Hexagon } from "./Hexagon";
@@ -25,7 +25,6 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     footerStyle: object = { height: constants.footerrHeight, width: constants.containerWidth };
     decreaseButtonDisabled = false;
     increaseButtonDisabled = false;
-    hexagonGridSize = routeSrv.getCurrentGridSize();
 
     constructor(props: HexagonGridProps) {
         super(props);
@@ -37,54 +36,32 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         this.onSizeIncreasing = this.onSizeIncreasing.bind(this);
         this.onSizeDecreasing = this.onSizeDecreasing.bind(this);
         this.state = {
-            hexagonGridSize: this.hexagonGridSize,
-            gridItems: hexagonGridCalculateSrv.createHexagonGridItems(this.hexagonGridSize, this.hexagonWidth, this.hexagonHeight, constants.containerWidth, constants.contentHeight),
+            hexagonGridSize: routeSrv.getCurrentGridSize(),
+            gridItems: [],
             hexagonItems: []
         };
+        // this.state = {
+        //     hexagonGridSize: this.hexagonGridSize,
+        //     gridItems: hexagonGridCalculateSrv.createHexagonGridItems(this.hexagonGridSize, this.hexagonWidth, this.hexagonHeight, constants.containerWidth, constants.contentHeight),
+        //     hexagonItems: []
+        // };
         this.validateHexGridSizeButtons();
-        this.init();
-    }
-
-    init(){
-        getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
-            let [gridItems, hexagonItems] = getItems(this.state.gridItems, this.state.hexagonItems, result);
-            this.setState({
-                gridItems: gridItems,
-                hexagonItems: hexagonItems
-            });
-            console.log("getRandomData");
-            console.log(result);
-        });
     }
 
     componentDidMount() {
         console.log("componentDidMount");
-        if (this.state.gridItems.length === 0) {
-            // getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
-            //     let [gridItems, hexagonItems] = getItems(this.state.gridItems, this.state.hexagonItems, result);
-            //     this.setState({
-            //         gridItems: gridItems,
-            //         hexagonItems: hexagonItems
-            //     });
-            //     console.log("getRandomData");
-            //     console.log(result);
-            // });
-        }
+        getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
+            this.initHexGrid(result);
+        });
     }
 
     componentDidUpdate(prevProps: HexagonGridProps, prevState: HexagonGridState) {
         console.log("componentDidUpdate: prev state");
         console.log(prevState);
-        if (prevState.hexagonGridSize !== this.state.hexagonGridSize || this.state.gridItems.length === 0) {
-            // getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
-            //     let [gridItems, hexagonItems] = getItems(this.state.gridItems, this.state.hexagonItems, result);
-            //     this.setState({
-            //         gridItems: gridItems,
-            //         hexagonItems: hexagonItems
-            //     });
-            //     console.log("getRandomData");
-            //     console.log(result);
-            // });
+        if (prevState.hexagonGridSize !== this.state.hexagonGridSize) {
+            getRandomData([], this.state.hexagonGridSize).then(result => {
+                this.initHexGrid(result);
+            });
         }
     }
 
@@ -113,9 +90,22 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         this.increaseButtonDisabled = hexagonGridSize < constants.hexagonGridSizeMax ? false : true;
         this.decreaseButtonDisabled = hexagonGridSize > constants.hexagonGridSizeMin ? false : true;
     }
-    // hexagonGridSize: routeSrv.getCurrentGridSize(),
-    //hexagonItems: [],
-    //gridItems: []
+    
+    initHexGrid(result: HexagonCell[]){
+        let gridItems = hexagonGridCalculateSrv.createHexagonGridItems(
+            this.state.hexagonGridSize,
+            this.hexagonWidth,
+            this.hexagonHeight,
+            constants.containerWidth,
+            constants.contentHeight
+        );
+        let [gridItemsNew, hexagonItemsNew] = getItems(gridItems, [], result);
+        this.setState({
+            gridItems: gridItemsNew,
+            hexagonItems: hexagonItemsNew
+        });
+    }
+
     render() {
         let { hexagonGridSize, gridItems, hexagonItems } = this.state;
         return (
