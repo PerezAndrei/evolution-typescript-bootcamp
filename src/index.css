@@ -1,4 +1,11 @@
+html{
+  width: 100%;
+  height: 100%;
+}
+
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +17,41 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root{
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hexagon-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.hexagon-container .content{
+  position: relative;
+}
+
+.hexagon-container .content .hex-item{
+  position: absolute;
+}
+
+.hexagon-container .header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexagon-container .footer{
+  height: 10%;
+  width: 100%;
+}
+
+.hexagon-container .form-inline .form-control.input-small{
+  width: 50px;
 }
