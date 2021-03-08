@@ -16,7 +16,36 @@ export const unit: Unit = {
 export const gameLevel = new Map<string, number>()
     .set("#test2", 2)
     .set("#test3", 3)
-    .set("#test4", 4)
+    .set("#test4", 4);
+
+export enum ShiftDirection {
+    Top = 1,
+    Bottom = 2,
+    Left = 4,
+    Right = 8,
+    TopLeft = Top | Left,
+    TopRight = Top | Right,
+    BottomLeft = Bottom | Left,
+    BottomRight= Bottom | Right
+}
+
+export const KeyboardCode = {
+    Q: "KeyQ",
+    W: "KeyW",
+    E: "KeyE",
+    A: "KeyA",
+    S: "KeyS",
+    D: "KeyD"
+}
+
+export const keyboardCodeDirection = new Map<string, ShiftDirection>()
+.set(KeyboardCode.Q, ShiftDirection.TopLeft)
+.set(KeyboardCode.W, ShiftDirection.Top)
+.set(KeyboardCode.E, ShiftDirection.TopRight)
+.set(KeyboardCode.A, ShiftDirection.BottomLeft)
+.set(KeyboardCode.S, ShiftDirection.Bottom)
+.set(KeyboardCode.D, ShiftDirection.BottomRight)
+
 
 
 const containerHeight = 800 // unit: pixel
@@ -41,5 +70,8 @@ export default {
     footerrHeight,
     gameLevel,
     hexagonGridSizeMax,
-    hexagonGridSizeMin
+    hexagonGridSizeMin,
+    KeyboardCode,
+    ShiftDirection,
+    keyboardCodeDirection
 };

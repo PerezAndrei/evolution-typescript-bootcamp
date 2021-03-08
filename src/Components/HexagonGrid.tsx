@@ -11,6 +11,7 @@ import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import routeSrv from "../Services/RouteSrv";
 import { getRandomData } from "../Services/DataService";
 import { getItems } from "../Services/HexagonItemsService";
+import { EventType } from "@testing-library/dom";
 
 export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridState>{
     hexagonSize: number = constants.hexagonSize;
@@ -40,16 +41,12 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
             gridItems: [],
             hexagonItems: []
         };
-        // this.state = {
-        //     hexagonGridSize: this.hexagonGridSize,
-        //     gridItems: hexagonGridCalculateSrv.createHexagonGridItems(this.hexagonGridSize, this.hexagonWidth, this.hexagonHeight, constants.containerWidth, constants.contentHeight),
-        //     hexagonItems: []
-        // };
         this.validateHexGridSizeButtons();
     }
 
     componentDidMount() {
         console.log("componentDidMount");
+        document.addEventListener("keydown", this.onKeyDown);
         getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
             this.initHexGrid(result);
         });
@@ -65,9 +62,17 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         }
     }
 
-    shouldComponentUpdate(nextProps: HexagonGridProps, nextState: HexagonGridState) {
-        console.log("shouldComponentUpdate");
-        return true;
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.onKeyDown);
+    }
+
+    onKeyDown(event: KeyboardEvent) {
+        console.log("onKeyDown");
+        console.log(event);
+        let direction = constants.keyboardCodeDirection.get(event.code);
+        if (!!direction) {
+            console.log(constants.ShiftDirection[direction]);
+        }
     }
 
     onSizeIncreasing() {
@@ -90,8 +95,8 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         this.increaseButtonDisabled = hexagonGridSize < constants.hexagonGridSizeMax ? false : true;
         this.decreaseButtonDisabled = hexagonGridSize > constants.hexagonGridSizeMin ? false : true;
     }
-    
-    initHexGrid(result: HexagonCell[]){
+
+    initHexGrid(result: HexagonCell[]) {
         let gridItems = hexagonGridCalculateSrv.createHexagonGridItems(
             this.state.hexagonGridSize,
             this.hexagonWidth,
