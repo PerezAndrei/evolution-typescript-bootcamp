@@ -34,13 +34,14 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         [this.points, this.hexagonStrokeWidth] = hexagonCalculateSrv.getFlatPointsAndMargin(this.hexagonWidth, this.hexagonHeight, this.hexagonSize);
         this.viewBoxValue = hexagonCalculateSrv.getViewBoxValue(this.hexagonWidth, this.hexagonHeight);
         this.pointsStringify = hexagonCalculateSrv.getPointsStringify(this.points);
-        this.onSizeIncreasing = this.onSizeIncreasing.bind(this);
-        this.onSizeDecreasing = this.onSizeDecreasing.bind(this);
+        this.onIncreaseSize = this.onIncreaseSize.bind(this);
+        this.onDecreaseSize = this.onDecreaseSize.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
             hexagonGridSize: routeSrv.getCurrentGridSize(),
             gridItems: [],
-            hexagonItems: []
+            hexagonItems: [],
+            isShifting: false
         };
         this.validateHexGridSizeButtons();
     }
@@ -48,18 +49,22 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     componentDidMount() {
         console.log("componentDidMount");
         document.addEventListener("keydown", this.onKeyDown);
-        getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
+        getRandomData([], this.state.hexagonGridSize).then(result => {
             this.initHexGrid(result);
         });
     }
 
     componentDidUpdate(prevProps: HexagonGridProps, prevState: HexagonGridState) {
-        console.log("componentDidUpdate: prev state");
-        console.log(prevState);
+        console.log("componentDidUpdate");
         if (prevState.hexagonGridSize !== this.state.hexagonGridSize) {
             getRandomData([], this.state.hexagonGridSize).then(result => {
                 this.initHexGrid(result);
-            });
+            }); 
+        }
+        if(this.state.isShifting){
+            getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
+                this.updateHexGrid(result);
+            }); 
         }
     }
 
@@ -71,15 +76,18 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         let direction = constants.keyboardCodeDirection.get(event.code);
         if (!!direction) {
             console.log(constants.ShiftDirection[direction]);
-            let [gridItems, hexagonItems] = shiftItems(direction, this.state.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
-            this.setState({
-                hexagonItems,
-                gridItems
-            });
+            let [gridItems, hexagonItems, isShifting] = shiftItems(direction, this.state.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
+            if(isShifting){
+                this.setState({
+                    hexagonItems,
+                    gridItems,
+                    isShifting
+                });
+            }
         }
     }
 
-    onSizeIncreasing() {
+    onIncreaseSize() {
         this.setState(state => {
             const newHexGridSize = state.hexagonGridSize + 1;
             this.validateHexGridSizeButtons(newHexGridSize);
@@ -87,7 +95,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         });
     }
 
-    onSizeDecreasing() {
+    onDecreaseSize() {
         this.setState(state => {
             const newHexGridSize = state.hexagonGridSize - 1;
             this.validateHexGridSizeButtons(newHexGridSize);
@@ -111,7 +119,16 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         let [gridItemsNew, hexagonItemsNew] = getItems(gridItems, [], result);
         this.setState({
             gridItems: gridItemsNew,
-            hexagonItems: hexagonItemsNew
+            hexagonItems: hexagonItemsNew,
+        });
+    }
+
+    updateHexGrid(result: HexagonCell[]) {
+        let [gridItemsNew, hexagonItemsNew] = getItems(this.state.gridItems, this.state.hexagonItems, result);
+        this.setState({
+            gridItems: gridItemsNew,
+            hexagonItems: hexagonItemsNew,
+            isShifting: false
         });
     }
 
@@ -134,11 +151,11 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                             <Col>
                                 <ButtonGroup>
                                     <Button
-                                        onClick={this.onSizeIncreasing}
+                                        onClick={this.onIncreaseSize}
                                         variant="secondary"
                                         disabled={this.increaseButtonDisabled}><i className="fas fa-plus"></i></Button>
                                     <Button
-                                        onClick={this.onSizeDecreasing}
+                                        onClick={this.onDecreaseSize}
                                         variant="secondary"
                                         disabled={this.decreaseButtonDisabled}>
                                         <i className="fas fa-minus"></i>

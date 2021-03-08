@@ -3,6 +3,11 @@ type Unit = {
     percent: string;
 }
 
+export enum GameStatus{
+    Playing,
+    GameOver
+}
+
 export enum HexagonOrientation {
     Flat,
     Pointy
@@ -44,7 +49,7 @@ export const keyboardCodeDirection = new Map<string, ShiftDirection>()
 .set(KeyboardCode.E, ShiftDirection.TopRight)
 .set(KeyboardCode.A, ShiftDirection.BottomLeft)
 .set(KeyboardCode.S, ShiftDirection.Bottom)
-.set(KeyboardCode.D, ShiftDirection.BottomRight)
+.set(KeyboardCode.D, ShiftDirection.BottomRight);
 
 
 
@@ -73,5 +78,6 @@ export default {
     hexagonGridSizeMin,
     KeyboardCode,
     ShiftDirection,
-    keyboardCodeDirection
+    keyboardCodeDirection,
+    GameStatus
 };

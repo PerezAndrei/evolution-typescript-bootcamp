@@ -43,9 +43,7 @@ function getPointyPointsAndMargin(containerWidth: number, containerHeight: numbe
 }
 
 function getFlatPointsAndMargin(containerWidth: number, containerHeight: number, size: number): [points: HexagonPoints, margin: number] {
-    console.log(`getFlatPointsAndMargin: containerWidth = "${containerWidth}", containerHeight = "${containerHeight}" size = "${size}"`);
     const [width, height, offsetX, offsetY, margin] = getHexagonParams(containerWidth, containerHeight, size, HexagonOrientation.Flat);
-    console.log(`getHexagonParams: width = "${width}", height = "${height}" offsetX = "${offsetX}" offsetY = "${offsetY}" margin = "${margin}"`);
     const points: HexagonPoints = {
         point1: {
             x: 0,
@@ -96,7 +94,6 @@ function getHexagonParams(
     orientation: HexagonOrientation
 ): [width: number, height: number, offsetX: number, offsetY: number, margin: number] {
     const newSize = Math.round(size * ((100 - hexagonMargin) / 100)); // the size without margin
-    console.log(`newSize: "${newSize}"`);
     const [width, height] = getHexagonSize(newSize, orientation);
     const margin = (containerHeight - height);
     const offsetX = (containerWidth - width) / 2;

@@ -59,10 +59,8 @@ function createHexagonGridItems(
     for (let x = -stepCount; x <= stepCount; x++) {
         for (let y = Math.max(-stepCount, -x - stepCount); y <= Math.min(stepCount, -x + stepCount); y++) {
             let z = -x - y;
-            console.log(`x: ${x}, y: ${y}, z: ${z}`);
             let hexCenterleftFromHexGridCenter = x * hexagonWidth * 3 / 4;
             let hexCentertopFromHexGridCenter = (z-y) * hexagonHeight / 2;
-            console.log(`hexCenterleftFromHexGridCenter: ${hexCenterleftFromHexGridCenter}, hexCentertopFromHexGridCenter: ${hexCentertopFromHexGridCenter}`);
             let left = hexGridCenterLocation.left + hexCenterleftFromHexGridCenter - hexCenterOffset.left;
             let top = hexGridCenterLocation.top + hexCentertopFromHexGridCenter - hexCenterOffset.top;
             result.push({ x, y, z, left, top, value: 0 });
