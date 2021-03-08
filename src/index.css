@@ -39,6 +39,7 @@ code {
 
 .hexagon-container .content .hex-item{
   position: absolute;
+  transition: all 0.3s ease 0s;
 }
 
 .hexagon-container .header{

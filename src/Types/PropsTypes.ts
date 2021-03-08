@@ -6,6 +6,7 @@ export type HexagonProps = {
     height: number,
     strokeWidth: number,
     points: string,
+    valuable: boolean,
     params: HexagonParams
 }
 

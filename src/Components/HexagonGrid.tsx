@@ -10,7 +10,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import routeSrv from "../Services/RouteSrv";
 import { getRandomData } from "../Services/DataService";
-import { getItems } from "../Services/HexagonItemsService";
+import { getItems, shiftItems } from "../Services/HexagonItemsService";
 import { EventType } from "@testing-library/dom";
 
 export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridState>{
@@ -36,6 +36,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         this.pointsStringify = hexagonCalculateSrv.getPointsStringify(this.points);
         this.onSizeIncreasing = this.onSizeIncreasing.bind(this);
         this.onSizeDecreasing = this.onSizeDecreasing.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
             hexagonGridSize: routeSrv.getCurrentGridSize(),
             gridItems: [],
@@ -67,11 +68,14 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     }
 
     onKeyDown(event: KeyboardEvent) {
-        console.log("onKeyDown");
-        console.log(event);
         let direction = constants.keyboardCodeDirection.get(event.code);
         if (!!direction) {
             console.log(constants.ShiftDirection[direction]);
+            let [gridItems, hexagonItems] = shiftItems(direction, this.state.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
+            this.setState({
+                hexagonItems,
+                gridItems
+            });
         }
     }
 
@@ -154,6 +158,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                                 height={this.hexagonHeight}
                                 width={this.hexagonWidth}
                                 strokeWidth={0}
+                                valuable={true}
                                 params={item} />)
                         })}
                     </div>
@@ -165,6 +170,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                             height={this.hexagonHeight}
                             width={this.hexagonWidth}
                             strokeWidth={this.hexagonStrokeWidth}
+                            valuable={false}
                             params={item} />)
                     })}
                 </div>

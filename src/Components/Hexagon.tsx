@@ -8,12 +8,12 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
         super(props);
     }
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     get style(): object {
         return { top: this.props.params.top, left: this.props.params.left };
+    }
+
+    get color(): string{
+        return this.props.valuable ? "#e1ede4" : "none";
     }
 
     render() {
@@ -29,7 +29,7 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                     height={this.props.height.toPixels()}
                     viewBox={this.props.viewBox}>
                     <polygon
-                        fill="none"
+                        fill={this.color}
                         stroke="#d9d9d9"
                         strokeWidth={this.props.strokeWidth}
                         points={this.props.points} />
@@ -38,7 +38,8 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                         y="50%"
                         dominantBaseline="middle"
                         textAnchor="middle"
-                        className="heavy">{this.props.params.value || ""}</text>
+                        display={this.props.valuable ? "block" : "none"}
+                        className="heavy">{this.props.params.value}</text>
                 </svg>
             </div>
         )
