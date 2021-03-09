@@ -3,11 +3,6 @@ type Unit = {
     percent: string;
 }
 
-export enum GameStatus{
-    Playing,
-    GameOver
-}
-
 export enum HexagonOrientation {
     Flat,
     Pointy
@@ -23,6 +18,19 @@ export const gameLevel = new Map<string, number>()
     .set("#test3", 3)
     .set("#test4", 4);
 
+export enum BootstrapAlertType {
+    Secondary = "secondary",
+    Success = "success",
+    Danger = "danger",
+    None = ""
+}
+
+export enum GameStatusValue {
+    Playing = "playing",
+    Win = "win",
+    GameOver = "game-over"
+}
+
 export enum ShiftDirection {
     Top = 1,
     Bottom = 2,
@@ -31,7 +39,7 @@ export enum ShiftDirection {
     TopLeft = Top | Left,
     TopRight = Top | Right,
     BottomLeft = Bottom | Left,
-    BottomRight= Bottom | Right
+    BottomRight = Bottom | Right
 }
 
 export const KeyboardCode = {
@@ -44,12 +52,12 @@ export const KeyboardCode = {
 }
 
 export const keyboardCodeDirection = new Map<string, ShiftDirection>()
-.set(KeyboardCode.Q, ShiftDirection.TopLeft)
-.set(KeyboardCode.W, ShiftDirection.Top)
-.set(KeyboardCode.E, ShiftDirection.TopRight)
-.set(KeyboardCode.A, ShiftDirection.BottomLeft)
-.set(KeyboardCode.S, ShiftDirection.Bottom)
-.set(KeyboardCode.D, ShiftDirection.BottomRight);
+    .set(KeyboardCode.Q, ShiftDirection.TopLeft)
+    .set(KeyboardCode.W, ShiftDirection.Top)
+    .set(KeyboardCode.E, ShiftDirection.TopRight)
+    .set(KeyboardCode.A, ShiftDirection.BottomLeft)
+    .set(KeyboardCode.S, ShiftDirection.Bottom)
+    .set(KeyboardCode.D, ShiftDirection.BottomRight);
 
 
 
@@ -63,6 +71,8 @@ export const hexagonSize = 40; // unit: pixel
 export const hexagonGridSizeMin = 2;
 export const hexagonGridSizeMax = 5;
 export const randomCellsURL = "http://51.15.207.127:13337/";
+//export const maxHexValue = 2048;
+export const maxHexValue = 4;
 
 export default {
     unit,
@@ -79,5 +89,7 @@ export default {
     KeyboardCode,
     ShiftDirection,
     keyboardCodeDirection,
-    GameStatus
+    GameStatusValue,
+    maxHexValue,
+    BootstrapAlertType
 };

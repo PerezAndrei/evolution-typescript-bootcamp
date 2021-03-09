@@ -1,4 +1,4 @@
-import { ShiftDirection } from "../Helpers/Constants";
+import { GameStatusValue, maxHexValue, ShiftDirection } from "../Helpers/Constants";
 import { HexagonCell, HexagonCoordinates, HexagonParams } from "../Types/HexagonTypes";
 
 export function getItems(
@@ -90,7 +90,7 @@ function shiftItemsTop(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }
@@ -140,7 +140,7 @@ function shiftItemsTopLeft(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }
@@ -190,7 +190,7 @@ function shiftItemsTopRight(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }
@@ -240,7 +240,7 @@ function shiftItemsBottom(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }
@@ -290,7 +290,7 @@ function shiftItemsBottomRight(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }
@@ -340,7 +340,7 @@ function shiftItemsBottomLeft(
                     gridItemFrom.value = 0;
                     gridItemTo.value = rowItem.value;
                     Object.assign(rowItem, gridItemTo);
-                    if(!isShifting){
+                    if (!isShifting) {
                         isShifting = true;
                     }
                 }

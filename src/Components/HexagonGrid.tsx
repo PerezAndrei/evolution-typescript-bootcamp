@@ -11,7 +11,7 @@ import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import routeSrv from "../Services/RouteSrv";
 import { getRandomData } from "../Services/DataService";
 import { getItems, shiftItems } from "../Services/HexagonItemsService";
-import { EventType } from "@testing-library/dom";
+import { GameStatus } from "./GameStatus";
 
 export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridState>{
     hexagonSize: number = constants.hexagonSize;
@@ -59,12 +59,12 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         if (prevState.hexagonGridSize !== this.state.hexagonGridSize) {
             getRandomData([], this.state.hexagonGridSize).then(result => {
                 this.initHexGrid(result);
-            }); 
+            });
         }
-        if(this.state.isShifting){
+        if (this.state.isShifting) {
             getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
                 this.updateHexGrid(result);
-            }); 
+            });
         }
     }
 
@@ -76,8 +76,13 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         let direction = constants.keyboardCodeDirection.get(event.code);
         if (!!direction) {
             console.log(constants.ShiftDirection[direction]);
-            let [gridItems, hexagonItems, isShifting] = shiftItems(direction, this.state.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
-            if(isShifting){
+            let [gridItems, hexagonItems, isShifting] = shiftItems(
+                direction,
+                this.state.hexagonGridSize,
+                this.state.gridItems,
+                this.state.hexagonItems
+            );
+            if (isShifting) {
                 this.setState({
                     hexagonItems,
                     gridItems,
@@ -192,7 +197,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                     })}
                 </div>
                 <div style={this.footerStyle} className="footer">
-
+                    <GameStatus gridItems={gridItems}/>
                 </div>
             </div>
         )

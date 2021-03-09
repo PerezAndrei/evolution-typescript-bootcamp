@@ -12,3 +12,7 @@ export type HexagonProps = {
 
 export type HexagonGridProps = {
 }
+
+export type GameStatusProps  = {
+    gridItems: Array<HexagonParams>
+}
