@@ -71,8 +71,20 @@ export const hexagonSize = 40; // unit: pixel
 export const hexagonGridSizeMin = 2;
 export const hexagonGridSizeMax = 5;
 export const randomCellsURL = "http://51.15.207.127:13337/";
-//export const maxHexValue = 2048;
-export const maxHexValue = 4;
+export const maxHexValue = 2048;
+//export const maxHexValue = 4;
+
+export type colorHSLValue = {
+    h: number;
+    s: number;
+    l: number;
+}
+
+export type colorComponentRange = { min: number, max: number };
+
+export const hueRange: colorComponentRange = { min: 155.2, max: 360 };
+export const saturationRange: colorComponentRange = { min: 60, max: 60 };
+export const lightnessRange: colorComponentRange = { min: 80, max: 50 };
 
 export default {
     unit,
@@ -91,5 +103,8 @@ export default {
     keyboardCodeDirection,
     GameStatusValue,
     maxHexValue,
-    BootstrapAlertType
+    BootstrapAlertType,
+    HueRange: hueRange,
+    SaturationRange: saturationRange,
+    LightnessRange: lightnessRange
 };

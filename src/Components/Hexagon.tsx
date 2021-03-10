@@ -1,19 +1,24 @@
 import React from 'react';
+import { IColorHSL } from '../Interfaces/interfaces';
 import { HexagonProps } from '../Types/PropsTypes';
 import { HexagonState } from '../Types/StateTypes';
+import { getColorHSL } from '../Services/ColorService'
 
 export class Hexagon extends React.Component<HexagonProps, HexagonState>{
+    colorHSL: IColorHSL;
 
     constructor(props: HexagonProps) {
         super(props);
+        this.colorHSL = getColorHSL();
     }
 
     get style(): object {
         return { top: this.props.params.top, left: this.props.params.left };
     }
 
-    get color(): string{
-        return this.props.valuable ? "#e1ede4" : "none";
+    get color(): string {
+        this.colorHSL.init(this.props.params.value);
+        return this.props.valuable ? this.colorHSL.colorStringify : "none";
     }
 
     render() {

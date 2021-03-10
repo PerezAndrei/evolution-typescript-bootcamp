@@ -18,36 +18,92 @@ export function getItems(
     return [gridItemsNew, hexagonItemsNew];
 }
 
+export function shifttMergeItems(
+    direction: ShiftDirection,
+    gridSize: number,
+    gridItems: Array<HexagonParams>,
+    hexagonItems: Array<HexagonParams>
+): [griditems: Array<HexagonParams>, hexagonItems: Array<HexagonParams>, wasShifted: boolean] {
+    let wasShifted: boolean;
+    [gridItems, hexagonItems, wasShifted] = shiftItems(direction, gridSize, gridItems, hexagonItems);
+    if (wasShifted) {
+        let wasMerged: boolean;
+        console.log("mergeItems before", { gridItems, hexagonItems });
+        [wasMerged, hexagonItems] = mergeItems(direction, gridSize, gridItems, hexagonItems);
+        console.log("mergeItems after", { gridItems, hexagonItems });
+        if (wasMerged) {
+            [gridItems, hexagonItems] = shiftItems(direction, gridSize, gridItems, hexagonItems);
+        }
+    }
+    return [gridItems, hexagonItems, wasShifted];
+}
+
 export function shiftItems(
     direction: ShiftDirection,
     gridSize: number,
     gridItems: Array<HexagonParams>,
     hexagonItems: Array<HexagonParams>
-): [griditems: Array<HexagonParams>, hexagonItems: Array<HexagonParams>, isShifting: boolean] {
+): [griditems: Array<HexagonParams>, hexagonItems: Array<HexagonParams>, wasShifted: boolean] {
     let gridItemsNew = [...gridItems];
     let hexagonItemsNew = [...hexagonItems];
-    let isShifting = false;
+    let wasShifted = false;
     switch (direction) {
         case ShiftDirection.Top:
-            isShifting = shiftItemsTop(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsTop(gridSize, gridItemsNew, hexagonItemsNew);
             break;
         case ShiftDirection.TopLeft:
-            isShifting = shiftItemsTopLeft(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsTopLeft(gridSize, gridItemsNew, hexagonItemsNew);
             break;
         case ShiftDirection.TopRight:
-            isShifting = shiftItemsTopRight(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsTopRight(gridSize, gridItemsNew, hexagonItemsNew);
             break;
         case ShiftDirection.Bottom:
-            isShifting = shiftItemsBottom(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsBottom(gridSize, gridItemsNew, hexagonItemsNew);
             break;
         case ShiftDirection.BottomLeft:
-            isShifting = shiftItemsBottomLeft(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsBottomLeft(gridSize, gridItemsNew, hexagonItemsNew);
             break;
         case ShiftDirection.BottomRight:
-            isShifting = shiftItemsBottomRight(gridSize, gridItemsNew, hexagonItemsNew);
+            wasShifted = shiftItemsBottomRight(gridSize, gridItemsNew, hexagonItemsNew);
             break;
     }
-    return [gridItemsNew, hexagonItemsNew, isShifting];
+    return [gridItemsNew, hexagonItemsNew, wasShifted];
+}
+
+export function mergeItems(
+    direction: ShiftDirection,
+    gridSize: number,
+    gridItems: Array<HexagonParams>,
+    hexagonItems: Array<HexagonParams>
+): [wasMerged: boolean, hexagonitems: Array<HexagonParams>] {
+    let wasMerged = false;
+    switch (direction) {
+        case ShiftDirection.Top:
+            [wasMerged, hexagonItems] = mergeItemsTop(gridSize, gridItems, hexagonItems);
+            break;
+        case ShiftDirection.TopLeft:
+            [wasMerged, hexagonItems] = mergeItemsTopLeft(gridSize, gridItems, hexagonItems);
+            break;
+        case ShiftDirection.TopRight:
+            [wasMerged, hexagonItems] = mergeItemsTopRight(gridSize, gridItems, hexagonItems);
+            break;
+        case ShiftDirection.Bottom:
+            [wasMerged, hexagonItems] = mergeItemsBottom(gridSize, gridItems, hexagonItems);
+            break;
+        case ShiftDirection.BottomLeft:
+            [wasMerged, hexagonItems] = mergeItemsBottomLeft(gridSize, gridItems, hexagonItems);
+            break;
+        case ShiftDirection.BottomRight:
+            [wasMerged, hexagonItems] = mergeItemsBottomRight(gridSize, gridItems, hexagonItems);
+            break;
+    }
+    return [wasMerged, hexagonItems];
+}
+
+export function hexParamsToCells(hexParams: Array<HexagonParams>):Array<HexagonCell>{
+    return hexParams.map<HexagonCell>(i => {
+        return { x: i.x, y: i.y, z: i.z, value: i.value };
+    });
 }
 
 function shiftItemsTop(
@@ -349,3 +405,175 @@ function shiftItemsBottomLeft(
     }
     return isShifting;
 }
+
+function mergeItemsTop(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let x = -gridSize + 1; x < gridSize; x++) {
+        let sortedItems = hexagonItems.filter(i => i.x === x).sort(sortYDesc);
+        console.log("mergeItemsTopBefore", { sortedItems, hexagonItems, wasMerged });
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        console.log("mergeItemsTopAfter", { sortedItems, hexagonItems, wasMerged });
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        console.log('hexagonItems.filter(i => i.value !== 0)');
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    console.log("mergeItemsTopReturn", { hexagonItems, wasMerged });
+    return [wasMerged, hexagonItems];
+}
+
+function mergeItemsTopLeft(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let z = -gridSize + 1; z < gridSize; z++) {
+        let sortedItems = hexagonItems.filter(i => i.z === z).sort(sortYDesc);
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    return [wasMerged, hexagonItems];
+}
+
+function mergeItemsTopRight(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let y = -gridSize + 1; y < gridSize; y++) {
+        let sortedItems = hexagonItems.filter(i => i.y === y).sort(sortXDesc);
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    return [wasMerged, hexagonItems];
+}
+
+function mergeItemsBottom(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let x = -gridSize + 1; x < gridSize; x++) {
+        let sortedItems = hexagonItems.filter(i => i.x === x).sort(sortYAsc);
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    return [wasMerged, hexagonItems];
+}
+
+function mergeItemsBottomLeft(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let y = -gridSize + 1; y < gridSize; y++) {
+        let sortedItems = hexagonItems.filter(i => i.y === y).sort(sortXAsc);
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    return [wasMerged, hexagonItems];
+}
+
+function mergeItemsBottomRight(
+    gridSize: number,
+    gridItems: HexagonParams[],
+    hexagonItems: HexagonParams[]
+): [wasMerged: boolean, hexagonItems: Array<HexagonParams>] {
+    let wasMerged = false;
+    for (let z = -gridSize + 1; z < gridSize; z++) {
+        let sortedItems = hexagonItems.filter(i => i.z === z).sort(sortXDesc);
+        let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
+        if (!wasMerged && wasMergedCurrent) {
+            wasMerged = true;
+        }
+    }
+    if (wasMerged) {
+        hexagonItems = hexagonItems.filter(i => i.value !== 0);
+    }
+    return [wasMerged, hexagonItems];
+}
+
+function mergeSortedItems(gridItems: Array<HexagonParams>, sortedItems: Array<HexagonParams>): boolean {
+    let wasMerged = false;
+    if (sortedItems.length > 1) {
+        console.log("items.length > 1");
+        for (let index = 0; index < sortedItems.length - 1; index++) {
+            console.log("iteration")
+            let firstItem = sortedItems[index];
+            let secondItem = sortedItems[index + 1];
+            let wasMergedCurrent = mergeHexagons(firstItem, secondItem);
+            if (wasMergedCurrent) {
+                updateGridItems(gridItems, firstItem, secondItem);
+                index++;
+            }
+            if (!wasMerged && wasMergedCurrent) {
+                wasMerged = true;
+            }
+        }
+    }
+    return wasMerged;
+}
+
+function mergeHexagons(first: HexagonParams, second: HexagonParams): boolean {
+    console.log("mergeHexagons before", { first, second })
+    let wasMerged = false;
+    if (first.value === second.value) {
+        first.value += second.value;
+        second.value = 0;
+        wasMerged = true;
+    }
+    console.log("mergeHexagons after", { first, second })
+    return wasMerged;
+}
+
+function updateGridItems(gridItems: Array<HexagonParams>, ...hexagonItems: Array<HexagonParams>) {
+    for (let hexagonItem of hexagonItems) {
+        let gridItem = gridItems.find(
+            i => i.x === hexagonItem.x &&
+                i.y === hexagonItem.y &&
+                i.z === hexagonItem.z);
+        if (!!gridItem) {
+            gridItem.value = hexagonItem.value
+        }
+    }
+}
+
+let sortYAsc = (hex1: HexagonParams, hex2: HexagonParams) => hex1.y - hex2.y;
+let sortYDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.y - hex1.y;
+
+let sortXAsc = (hex1: HexagonParams, hex2: HexagonParams) => hex1.x - hex2.x;
+let sortXDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.x - hex1.x;
+
+let sortZAsc = (hex1: HexagonParams, hex2: HexagonParams) => hex1.z - hex2.z;
+let sortZDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.z - hex1.z;

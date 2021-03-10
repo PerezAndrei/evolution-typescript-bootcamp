@@ -10,7 +10,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import routeSrv from "../Services/RouteSrv";
 import { getRandomData } from "../Services/DataService";
-import { getItems, shiftItems } from "../Services/HexagonItemsService";
+import { getItems, hexParamsToCells, mergeItems, shiftItems, shifttMergeItems } from "../Services/HexagonItemsService";
 import { GameStatus } from "./GameStatus";
 
 export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridState>{
@@ -21,7 +21,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     hexagonStrokeWidth: number;
     viewBoxValue: string;
     pointsStringify: string;
-    contentStyle: object = { height: constants.contentHeight, width: constants.containerWidth };
+    contentStyle: object = { height: 0, width: constants.containerWidth };
     headerStyle: object = { height: constants.headerHeight, width: constants.containerWidth };
     footerStyle: object = { height: constants.footerrHeight, width: constants.containerWidth };
     decreaseButtonDisabled = false;
@@ -62,7 +62,8 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
             });
         }
         if (this.state.isShifting) {
-            getRandomData(this.state.hexagonItems, this.state.hexagonGridSize).then(result => {
+            let hexCells = hexParamsToCells(this.state.hexagonItems);
+            getRandomData(hexCells, this.state.hexagonGridSize).then(result => {
                 this.updateHexGrid(result);
             });
         }
@@ -76,17 +77,12 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         let direction = constants.keyboardCodeDirection.get(event.code);
         if (!!direction) {
             console.log(constants.ShiftDirection[direction]);
-            let [gridItems, hexagonItems, isShifting] = shiftItems(
-                direction,
-                this.state.hexagonGridSize,
-                this.state.gridItems,
-                this.state.hexagonItems
-            );
-            if (isShifting) {
+            let [gridItems, hexagonItems, wasShifted] = shifttMergeItems(direction, this.state.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
+            if (wasShifted) {
                 this.setState({
                     hexagonItems,
                     gridItems,
-                    isShifting
+                    isShifting: wasShifted
                 });
             }
         }
@@ -197,7 +193,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                     })}
                 </div>
                 <div style={this.footerStyle} className="footer">
-                    <GameStatus gridItems={gridItems}/>
+                    <GameStatus gridItems={gridItems} />
                 </div>
             </div>
         )
