@@ -9,6 +9,10 @@ function getFlatSize(size: number = hexagonSize): number {
     return Math.sqrt(3) * size;
 }
 
+function getSizeByFlatSize(flatSize: number): number {
+    return flatSize / Math.sqrt(3);
+}
+
 function getPointyPointsAndMargin(containerWidth: number, containerHeight: number, size: number): [points: HexagonPoints, margin: number] {
     const [width, height, offsetX, offsetY, margin] = getHexagonParams(containerWidth, containerHeight, size, HexagonOrientation.Pointy);
     const points: HexagonPoints = {
@@ -130,4 +134,4 @@ const getFlatHeight = getFlatSize;
 const getPointyWidth = getFlatSize;
 const getPointyHeight = getPointySize;
 
-export { getFlatWidth, getFlatHeight, getPointyWidth, getPointyHeight, getFlatPointsAndMargin, getViewBoxValue, getPointsStringify };
+export { getFlatWidth, getFlatHeight, getPointyWidth, getPointyHeight, getFlatPointsAndMargin, getViewBoxValue, getPointsStringify, getSizeByFlatSize };

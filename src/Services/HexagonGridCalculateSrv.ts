@@ -1,4 +1,6 @@
 import { HexagonCoordinates, HexagonParams, HexagonLocation } from "../Types/HexagonTypes";
+import { contentHeight } from '../Helpers/Constants';
+import { getSizeByFlatSize } from "./HexagonCalculateSrv";
 
 function createHexagonGrid(size: number): Array<HexagonCoordinates> {
     const result: Array<HexagonCoordinates> = new Array<HexagonCoordinates>();
@@ -60,7 +62,7 @@ function createHexagonGridItems(
         for (let y = Math.max(-stepCount, -x - stepCount); y <= Math.min(stepCount, -x + stepCount); y++) {
             let z = -x - y;
             let hexCenterleftFromHexGridCenter = x * hexagonWidth * 3 / 4;
-            let hexCentertopFromHexGridCenter = (z-y) * hexagonHeight / 2;
+            let hexCentertopFromHexGridCenter = (z - y) * hexagonHeight / 2;
             let left = hexGridCenterLocation.left + hexCenterleftFromHexGridCenter - hexCenterOffset.left;
             let top = hexGridCenterLocation.top + hexCentertopFromHexGridCenter - hexCenterOffset.top;
             result.push({ x, y, z, left, top, value: 0 });
@@ -69,4 +71,9 @@ function createHexagonGridItems(
     return result;
 }
 
-export { createHexagonGrid, setHexagonLocation, createHexagonGridItems }
+function getHexagonSize(gridSize: number): number {
+    let hexagonHeight = contentHeight / (gridSize * 2 - 1);
+    return getSizeByFlatSize(hexagonHeight);
+}
+
+export { createHexagonGrid, setHexagonLocation, createHexagonGridItems, getHexagonSize }

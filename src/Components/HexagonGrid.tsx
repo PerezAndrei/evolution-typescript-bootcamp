@@ -14,14 +14,14 @@ import { getItems, hexParamsToCells, mergeItems, shiftItems, shifttMergeItems } 
 import { GameStatus } from "./GameStatus";
 
 export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridState>{
-    hexagonSize: number = constants.hexagonSize;
+    hexagonSize: number;
     hexagonWidth: number;
     hexagonHeight: number;
     points: HexagonPoints;
     hexagonStrokeWidth: number;
     viewBoxValue: string;
     pointsStringify: string;
-    contentStyle: object = { height: 0, width: constants.containerWidth };
+    contentStyle: object = { height: constants.contentHeight, width: constants.containerWidth };
     headerStyle: object = { height: constants.headerHeight, width: constants.containerWidth };
     footerStyle: object = { height: constants.footerrHeight, width: constants.containerWidth };
     decreaseButtonDisabled = false;
@@ -29,21 +29,32 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
 
     constructor(props: HexagonGridProps) {
         super(props);
-        this.hexagonWidth = hexagonCalculateSrv.getFlatWidth(this.hexagonSize);
-        this.hexagonHeight = hexagonCalculateSrv.getFlatHeight(this.hexagonSize);
-        [this.points, this.hexagonStrokeWidth] = hexagonCalculateSrv.getFlatPointsAndMargin(this.hexagonWidth, this.hexagonHeight, this.hexagonSize);
-        this.viewBoxValue = hexagonCalculateSrv.getViewBoxValue(this.hexagonWidth, this.hexagonHeight);
-        this.pointsStringify = hexagonCalculateSrv.getPointsStringify(this.points);
-        this.onIncreaseSize = this.onIncreaseSize.bind(this);
-        this.onDecreaseSize = this.onDecreaseSize.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
             hexagonGridSize: routeSrv.getCurrentGridSize(),
             gridItems: [],
             hexagonItems: [],
             isShifting: false
         };
+        this.hexagonSize = hexagonGridCalculateSrv.getHexagonSize(this.state.hexagonGridSize);
+        this.hexagonWidth = hexagonCalculateSrv.getFlatWidth(this.hexagonSize);
+        this.hexagonHeight = hexagonCalculateSrv.getFlatHeight(this.hexagonSize);
+        [this.points, this.hexagonStrokeWidth] = hexagonCalculateSrv.getFlatPointsAndMargin(this.hexagonWidth, this.hexagonHeight, this.hexagonSize);
+        this.viewBoxValue = hexagonCalculateSrv.getViewBoxValue(this.hexagonWidth, this.hexagonHeight);
+        this.pointsStringify = hexagonCalculateSrv.getPointsStringify(this.points);
+        this.initHexParams();
+        this.onIncreaseSize = this.onIncreaseSize.bind(this);
+        this.onDecreaseSize = this.onDecreaseSize.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);        
         this.validateHexGridSizeButtons();
+    }
+
+    initHexParams(){
+        this.hexagonSize = hexagonGridCalculateSrv.getHexagonSize(this.state.hexagonGridSize);
+        this.hexagonWidth = hexagonCalculateSrv.getFlatWidth(this.hexagonSize);
+        this.hexagonHeight = hexagonCalculateSrv.getFlatHeight(this.hexagonSize);
+        [this.points, this.hexagonStrokeWidth] = hexagonCalculateSrv.getFlatPointsAndMargin(this.hexagonWidth, this.hexagonHeight, this.hexagonSize);
+        this.viewBoxValue = hexagonCalculateSrv.getViewBoxValue(this.hexagonWidth, this.hexagonHeight);
+        this.pointsStringify = hexagonCalculateSrv.getPointsStringify(this.points);
     }
 
     componentDidMount() {
@@ -110,6 +121,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     }
 
     initHexGrid(result: HexagonCell[]) {
+        this.initHexParams();
         let gridItems = hexagonGridCalculateSrv.createHexagonGridItems(
             this.state.hexagonGridSize,
             this.hexagonWidth,
@@ -124,7 +136,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
         });
     }
 
-    updateHexGrid(result: HexagonCell[]) {
+    updateHexGrid(result: HexagonCell[]) {        
         let [gridItemsNew, hexagonItemsNew] = getItems(this.state.gridItems, this.state.hexagonItems, result);
         this.setState({
             gridItems: gridItemsNew,
