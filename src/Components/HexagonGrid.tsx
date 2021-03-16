@@ -9,7 +9,7 @@ import { Hexagon } from "./Hexagon";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import routeSrv from "../Services/RouteSrv";
-import { getRandomData } from "../Services/DataService";
+import { getRandomData } from '../Services/';
 import { getItems, hexParamsToCells, mergeItems, shiftItems, shifttMergeItems } from "../Services/HexagonItemsService";
 import { GameStatus } from "./GameStatus";
 
