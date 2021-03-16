@@ -28,7 +28,7 @@ export const hexagonMargin = 6; // unit: per cent
 export const hexagonSize = 40; // unit: pixel
 export const hexagonGridSizeMin = 2;
 export const hexagonGridSizeMax = 5;
-export const randomCellsURL = "http://51.15.207.127:13337/";
+export const randomCellsURL = "https://68f02c80-3bed-4e10-a747-4ff774ae905a.pub.instances.scw.cloud/";
 
 export default {
     unit,
