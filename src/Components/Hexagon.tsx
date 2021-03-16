@@ -1,19 +1,24 @@
 import React from 'react';
+import { IColorHSL } from '../Interfaces/interfaces';
 import { HexagonProps } from '../Types/PropsTypes';
 import { HexagonState } from '../Types/StateTypes';
+import { getColorHSL } from '../Services/ColorService'
 
 export class Hexagon extends React.Component<HexagonProps, HexagonState>{
+    colorHSL: IColorHSL;
 
     constructor(props: HexagonProps) {
         super(props);
-    }
-
-    componentDidMount() {
-        console.log(this.props);
+        this.colorHSL = getColorHSL();
     }
 
     get style(): object {
         return { top: this.props.params.top, left: this.props.params.left };
+    }
+
+    get color(): string {
+        this.colorHSL.init(this.props.params.value);
+        return this.props.valuable ? this.colorHSL.colorStringify : "none";
     }
 
     render() {
@@ -29,7 +34,7 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                     height={this.props.height.toPixels()}
                     viewBox={this.props.viewBox}>
                     <polygon
-                        fill="none"
+                        fill={this.color}
                         stroke="#d9d9d9"
                         strokeWidth={this.props.strokeWidth}
                         points={this.props.points} />
@@ -38,7 +43,8 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                         y="50%"
                         dominantBaseline="middle"
                         textAnchor="middle"
-                        className="heavy">{this.props.params.value || ""}</text>
+                        display={this.props.valuable ? "block" : "none"}
+                        className="heavy">{this.props.params.value}</text>
                 </svg>
             </div>
         )

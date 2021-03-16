@@ -10,12 +10,12 @@ export type HexagonValue = {
 
 export type HexagonCell = HexagonCoordinates & HexagonValue;
 
-export type HexagoonLocation = {
+export type HexagonLocation = {
     top: number;
     left: number;
 }
 
-export type HexagonParams = HexagonCoordinates & HexagoonLocation & HexagonValue;
+export type HexagonParams = HexagonCoordinates & HexagonLocation & HexagonValue;
 
 export type HexagonPoint = {
     x: number;

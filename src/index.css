@@ -39,6 +39,7 @@ code {
 
 .hexagon-container .content .hex-item{
   position: absolute;
+  transition: all 0.3s ease 0s;
 }
 
 .hexagon-container .header{
@@ -52,6 +53,13 @@ code {
   width: 100%;
 }
 
+.hexagon-container .footer .game-status-alert{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hexagon-container .form-inline .form-control.input-small{
-  width: 50px;
+  width: 70px;
 }

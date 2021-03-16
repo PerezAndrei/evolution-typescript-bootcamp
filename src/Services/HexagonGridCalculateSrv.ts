@@ -1,7 +1,8 @@
-import { HexagonCoordinates, HexagonParams, HexagoonLocation } from "../Types/HexagonTypes";
+import { HexagonCoordinates, HexagonParams, HexagonLocation } from "../Types/HexagonTypes";
+import { contentHeight } from '../Helpers/Constants';
+import { getSizeByFlatSize } from "./HexagonCalculateSrv";
 
 function createHexagonGrid(size: number): Array<HexagonCoordinates> {
-    console.log(`createHexagonGrid: size = "${size}"`);
     const result: Array<HexagonCoordinates> = new Array<HexagonCoordinates>();
     const stepCount = size - 1;
     for (let x = -stepCount; x <= stepCount; x++) {
@@ -10,8 +11,6 @@ function createHexagonGrid(size: number): Array<HexagonCoordinates> {
             result.push({ x, y, z });
         }
     }
-    console.log(`createHexagonGrid: result.length = "${result.length}"`);
-    result.forEach(item => console.log(item));
     return result;
 }
 
@@ -22,13 +21,12 @@ function setHexagonLocation(
     containerWidth: number,
     containerHeight: number
 ): Array<HexagonParams> {
-    console.log('createHexagonGrid');
     const params: Array<HexagonParams> = new Array<HexagonParams>();
-    const hexGridCenterLocation: HexagoonLocation = {
+    const hexGridCenterLocation: HexagonLocation = {
         left: containerWidth / 2,
         top: containerHeight / 2
     };
-    const hexCenterOffset: HexagoonLocation = {
+    const hexCenterOffset: HexagonLocation = {
         left: hexagonWidth / 2,
         top: hexagonWidth / 2
     }
@@ -40,7 +38,6 @@ function setHexagonLocation(
         const top = hexGridCenterLocation.top + hexCentertopFromHexGridCenter - hexCenterOffset.top;
         params.push({ ...item, left, top, value: 0 });
     }
-    params.forEach(item => console.log(item));
     return params;
 }
 
@@ -51,12 +48,11 @@ function createHexagonGridItems(
     containerWidth: number,
     containerHeight: number
 ): Array<HexagonParams> {
-    console.log(`createHexagonGridItems: size = "${size}"`);
-    let hexGridCenterLocation: HexagoonLocation = {
+    let hexGridCenterLocation: HexagonLocation = {
         left: containerWidth / 2,
         top: containerHeight / 2
     };
-    let hexCenterOffset: HexagoonLocation = {
+    let hexCenterOffset: HexagonLocation = {
         left: hexagonWidth / 2,
         top: hexagonWidth / 2
     }
@@ -66,14 +62,18 @@ function createHexagonGridItems(
         for (let y = Math.max(-stepCount, -x - stepCount); y <= Math.min(stepCount, -x + stepCount); y++) {
             let z = -x - y;
             let hexCenterleftFromHexGridCenter = x * hexagonWidth * 3 / 4;
-            let hexCentertopFromHexGridCenter = (-z + y) * hexagonHeight / 2;
+            let hexCentertopFromHexGridCenter = (z - y) * hexagonHeight / 2;
             let left = hexGridCenterLocation.left + hexCenterleftFromHexGridCenter - hexCenterOffset.left;
             let top = hexGridCenterLocation.top + hexCentertopFromHexGridCenter - hexCenterOffset.top;
             result.push({ x, y, z, left, top, value: 0 });
         }
     }
-    console.log(`createHexagonGridItems: result.length = "${result.length}"`);
     return result;
 }
 
-export { createHexagonGrid, setHexagonLocation, createHexagonGridItems }
+function getHexagonSize(gridSize: number): number {
+    let hexagonHeight = contentHeight / (gridSize * 2 - 1);
+    return getSizeByFlatSize(hexagonHeight);
+}
+
+export { createHexagonGrid, setHexagonLocation, createHexagonGridItems, getHexagonSize }
