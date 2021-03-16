@@ -97,11 +97,11 @@ function getHexagonParams(
     size: number,
     orientation: HexagonOrientation
 ): [width: number, height: number, offsetX: number, offsetY: number, margin: number] {
-    const newSize = Math.round(size * ((100 - hexagonMargin) / 100)); // the size without margin
-    const [width, height] = getHexagonSize(newSize, orientation);
-    const margin = (containerHeight - height);
-    const offsetX = (containerWidth - width) / 2;
-    const offsetY = (containerHeight - height) / 2;
+    let margin = size * hexagonMargin / 100;
+    let newSize = size - margin / 2; // the size without margin
+    let [width, height] = getHexagonSize(newSize, orientation);
+    let offsetX = (containerWidth - width) / 2;
+    let offsetY = (containerHeight - height) / 2;
     return [width, height, offsetX, offsetY, margin];
 }
 

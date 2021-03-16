@@ -72,7 +72,7 @@ function createHexagonGridItems(
 }
 
 function getHexagonSize(gridSize: number): number {
-    let hexagonHeight = contentHeight / (gridSize * 2 - 1);
+    let hexagonHeight = (contentHeight - 40) / (gridSize * 2 - 1);
     return getSizeByFlatSize(hexagonHeight);
 }
 
