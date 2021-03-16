@@ -179,7 +179,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
                     </Form>
                 </div>
                 <div style={this.contentStyle} className="content">
-                    <div>
+                    <div className="hex-items">
                         {hexagonItems.map((item, index) => {
                             return (<Hexagon
                                 key={index}

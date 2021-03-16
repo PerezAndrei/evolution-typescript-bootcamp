@@ -38,9 +38,15 @@ code {
 }
 
 .hexagon-container .content .hex-item{
-  position: absolute;
-  transition: all 0.3s ease 0s;
+  position: absolute;  
 }
+
+.hexagon-container .content .hex-items .hex-item{
+  transition: all 0.3s ease 0s;
+  animation-name: rotate;
+  animation-duration: 0.7s;
+}
+
 
 .hexagon-container .header{
   display: flex;
@@ -62,4 +68,13 @@ code {
 
 .hexagon-container .form-inline .form-control.input-small{
   width: 70px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.3);
+  }
 }
