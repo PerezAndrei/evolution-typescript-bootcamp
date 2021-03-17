@@ -2,7 +2,8 @@ import React from 'react';
 import { IColorHSL } from '../Interfaces/interfaces';
 import { HexagonProps } from '../Types/PropsTypes';
 import { HexagonState } from '../Types/StateTypes';
-import { getColorHSL } from '../Services/ColorService'
+import { getColorHSL } from '../Services/ColorService';
+import unitPostfix from '../Helpers/UnitPostfix'
 
 export class Hexagon extends React.Component<HexagonProps, HexagonState>{
     colorHSL: IColorHSL;
@@ -30,8 +31,8 @@ export class Hexagon extends React.Component<HexagonProps, HexagonState>{
                 data-y={this.props.params.y}
                 data-z={this.props.params.z}>
                 <svg xmlns="http://www.w3.org/2000/svg"
-                    width={this.props.width.toPixels()}
-                    height={this.props.height.toPixels()}
+                    width={unitPostfix.addPixel(this.props.width)}
+                    height={unitPostfix.addPixel(this.props.height)}
                     viewBox={this.props.viewBox}>
                     <polygon
                         fill={this.color}

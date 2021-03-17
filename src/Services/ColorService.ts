@@ -1,5 +1,6 @@
 import { colorComponentRange, colorHSLValue, maxHexValue, hueRange, saturationRange, lightnessRange } from "../Helpers/Constants";
-import { IColorHSL } from "../Interfaces/interfaces"
+import { IColorHSL } from "../Interfaces/interfaces";
+import unitPostfix from '../Helpers/UnitPostfix';
 
 class ColorHSL implements IColorHSL {
     private maxHexValue: number;
@@ -28,7 +29,7 @@ class ColorHSL implements IColorHSL {
     }
 
     get colorStringify(): string {
-        return `hsl(${this.colorHSLValue.h}, ${this.colorHSLValue.s.toPercent()}, ${this.colorHSLValue.l.toPercent()})`;;
+        return `hsl(${this.colorHSLValue.h}, ${unitPostfix.addPercent(this.colorHSLValue.s)}, ${unitPostfix.addPercent(this.colorHSLValue.l)})`;;
     };
 
     init(hexValue: number) {

@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import reportWebVitals from './reportWebVitals';
+import { HexagonGame } from './Components/HerxagonGame';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import reportWebVitals from './reportWebVitals';
-import { HexagonGrid } from './Components/HexagonGrid';
-import './Helpers/Extensions.ts'
-import { HexagonGame } from './Components/HerxagonGame';
 
 ReactDOM.render(
   <React.StrictMode>
