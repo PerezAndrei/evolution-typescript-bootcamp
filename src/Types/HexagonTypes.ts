@@ -29,4 +29,4 @@ export type HexagonPoints = {
     point4: HexagonPoint,
     point5: HexagonPoint,
     point6: HexagonPoint,
-}
+} | {}

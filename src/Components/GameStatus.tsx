@@ -7,7 +7,8 @@ import { GameStatusProps } from '../Types/PropsTypes';
 
 export const GameStatus: FunctionComponent<GameStatusProps> = (props: GameStatusProps) => {
     const [gameStatus, setGameStatus] = useState({ value: GameStatusValue.Playing });
-    useEffect(() => {             
+    useEffect(() => { 
+        console.log("GameStatus useEffect");           
         let gameStatusValue = getGameStatus(props.gridItems);
         setGameStatus({value: gameStatusValue});
     }, [gameStatus.value, props.gridItems]);

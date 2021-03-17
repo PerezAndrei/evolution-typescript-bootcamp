@@ -28,9 +28,7 @@ export function shifttMergeItems(
     [gridItems, hexagonItems, wasShifted] = shiftItems(direction, gridSize, gridItems, hexagonItems);
     if (wasShifted) {
         let wasMerged: boolean;
-        console.log("mergeItems before", { gridItems, hexagonItems });
         [wasMerged, hexagonItems] = mergeItems(direction, gridSize, gridItems, hexagonItems);
-        console.log("mergeItems after", { gridItems, hexagonItems });
         if (wasMerged) {
             [gridItems, hexagonItems] = shiftItems(direction, gridSize, gridItems, hexagonItems);
         }
@@ -113,15 +111,10 @@ function shiftItemsTop(
 ): boolean {
     let isShifting = false;
     for (let yz = gridSize - 2; yz > -gridSize; yz--) {
-        console.log(`yz: ${yz}`);
         let y = yz;
         let z = -yz;
         let rowItems = hexagonItems.filter(i => (i.x <= 0 && i.y === y) || (i.x > 0 && i.z === z));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -129,7 +122,6 @@ function shiftItemsTop(
             }
             while ((newLocation.y < gridSize && newLocation.x <= 0) ||
                 (newLocation.z > -gridSize && newLocation.x > 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.x === newLocation.x && i.y === newLocation.y + 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.y = gridItemNext.y;
@@ -163,15 +155,10 @@ function shiftItemsTopLeft(
 ): boolean {
     let isShifting = false;
     for (let xy = gridSize - 2; xy > -gridSize; xy--) {
-        console.log(`xy: ${xy}`);
         let x = -xy;
         let y = xy;
         let rowItems = hexagonItems.filter(i => (i.z >= 0 && i.x === x) || (i.z < 0 && i.y === y));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -179,7 +166,6 @@ function shiftItemsTopLeft(
             }
             while ((newLocation.y < gridSize && newLocation.z <= 0) ||
                 (newLocation.x > -gridSize && newLocation.z > 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.z === newLocation.z && i.y === newLocation.y + 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.x = gridItemNext.x;
@@ -213,15 +199,10 @@ function shiftItemsTopRight(
 ): boolean {
     let isShifting = false;
     for (let zx = gridSize - 2; zx > -gridSize; zx--) {
-        console.log(`zx: ${zx}`);
         let z = -zx;
         let x = zx;
         let rowItems = hexagonItems.filter(i => (i.y >= 0 && i.z === z) || (i.y < 0 && i.x === x));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -229,7 +210,6 @@ function shiftItemsTopRight(
             }
             while ((newLocation.x < gridSize && newLocation.y <= 0) ||
                 (newLocation.z > -gridSize && newLocation.y > 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.y === newLocation.y && i.x === newLocation.x + 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.x = gridItemNext.x;
@@ -263,15 +243,10 @@ function shiftItemsBottom(
 ): boolean {
     let isShifting = false;
     for (let yz = gridSize - 2; yz > -gridSize; yz--) {
-        console.log(`yz: ${yz}`);
         let y = -yz;
         let z = yz;
         let rowItems = hexagonItems.filter(i => (i.x <= 0 && i.y === y) || (i.x > 0 && i.z === z));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -279,7 +254,6 @@ function shiftItemsBottom(
             }
             while ((newLocation.z < gridSize && newLocation.x <= 0) ||
                 (newLocation.y > -gridSize && newLocation.x > 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.x === newLocation.x && i.y === newLocation.y - 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.y = gridItemNext.y;
@@ -313,15 +287,10 @@ function shiftItemsBottomRight(
 ): boolean {
     let isShifting = false;
     for (let xy = gridSize - 2; xy > -gridSize; xy--) {
-        console.log(`xy: ${xy}`);
         let x = xy;
         let y = -xy;
         let rowItems = hexagonItems.filter(i => (i.z >= 0 && i.x === x) || (i.z < 0 && i.y === y));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -329,7 +298,6 @@ function shiftItemsBottomRight(
             }
             while ((newLocation.y > -gridSize && newLocation.z <= 0) ||
                 (newLocation.x < gridSize && newLocation.z > 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.z === newLocation.z && i.y === newLocation.y - 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.x = gridItemNext.x;
@@ -363,15 +331,10 @@ function shiftItemsBottomLeft(
 ): boolean {
     let isShifting = false;
     for (let zx = gridSize - 2; zx > -gridSize; zx--) {
-        console.log(`zx: ${zx}`);
         let z = zx;
         let x = -zx;
         let rowItems = hexagonItems.filter(i => (i.y >= 0 && i.x === x) || (i.y < 0 && i.z === z));
-        console.log("rowItems");
-        console.log(rowItems);
         for (let rowItem of rowItems) {
-            console.log("let rowItem of rowItems");
-            console.log(rowItem);
             let newLocation: HexagonCoordinates = {
                 x: rowItem.x,
                 y: rowItem.y,
@@ -379,7 +342,6 @@ function shiftItemsBottomLeft(
             }
             while ((newLocation.x > -gridSize && newLocation.y >= 0) ||
                 (newLocation.z < gridSize && newLocation.y < 0)) {
-                console.log("while");
                 let gridItemNext = gridItems.find(i => i.y === newLocation.y && i.x === newLocation.x - 1);
                 if (!!gridItemNext && !gridItemNext.value) {
                     newLocation.x = gridItemNext.x;
@@ -414,18 +376,14 @@ function mergeItemsTop(
     let wasMerged = false;
     for (let x = -gridSize + 1; x < gridSize; x++) {
         let sortedItems = hexagonItems.filter(i => i.x === x).sort(sortYDesc);
-        console.log("mergeItemsTopBefore", { sortedItems, hexagonItems, wasMerged });
         let wasMergedCurrent = mergeSortedItems(gridItems, sortedItems);
-        console.log("mergeItemsTopAfter", { sortedItems, hexagonItems, wasMerged });
         if (!wasMerged && wasMergedCurrent) {
             wasMerged = true;
         }
     }
     if (wasMerged) {
-        console.log('hexagonItems.filter(i => i.value !== 0)');
         hexagonItems = hexagonItems.filter(i => i.value !== 0);
     }
-    console.log("mergeItemsTopReturn", { hexagonItems, wasMerged });
     return [wasMerged, hexagonItems];
 }
 
@@ -527,9 +485,7 @@ function mergeItemsBottomRight(
 function mergeSortedItems(gridItems: Array<HexagonParams>, sortedItems: Array<HexagonParams>): boolean {
     let wasMerged = false;
     if (sortedItems.length > 1) {
-        console.log("items.length > 1");
         for (let index = 0; index < sortedItems.length - 1; index++) {
-            console.log("iteration")
             let firstItem = sortedItems[index];
             let secondItem = sortedItems[index + 1];
             let wasMergedCurrent = mergeHexagons(firstItem, secondItem);
@@ -546,14 +502,12 @@ function mergeSortedItems(gridItems: Array<HexagonParams>, sortedItems: Array<He
 }
 
 function mergeHexagons(first: HexagonParams, second: HexagonParams): boolean {
-    console.log("mergeHexagons before", { first, second })
     let wasMerged = false;
     if (first.value === second.value) {
         first.value += second.value;
         second.value = 0;
         wasMerged = true;
     }
-    console.log("mergeHexagons after", { first, second })
     return wasMerged;
 }
 

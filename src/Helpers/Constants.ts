@@ -31,6 +31,11 @@ export enum GameStatusValue {
     GameOver = "game-over"
 }
 
+export enum RefreshGrid{
+    Init,
+    Update
+}
+
 export enum ShiftDirection {
     Top = 1,
     Bottom = 2,

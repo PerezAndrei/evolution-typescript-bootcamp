@@ -1,10 +1,19 @@
 import { HexagonParams } from "./HexagonTypes"
 
-export type HexagonState = {}
+export type HexagonGameState = {
+    hexagonGridSize: number;
+    gridItems: Array<HexagonParams>;
+}
+
+export type GameControlState = {
+    hexagonGridSize: number;
+}
 
 export type HexagonGridState = {
-    hexagonGridSize: number;
-    gridItems:  Array<HexagonParams>;
+    gridItems: Array<HexagonParams>;
     hexagonItems: Array<HexagonParams>;
     isShifting: boolean;
 }
+
+export type HexagonState = {}
+

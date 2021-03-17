@@ -5,10 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import { HexagonGrid } from './Components/HexagonGrid';
 import './Helpers/Extensions.ts'
+import { HexagonGame } from './Components/HerxagonGame';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HexagonGrid/>
+    <HexagonGame/>
   </React.StrictMode>,
   document.getElementById('root')
 );
