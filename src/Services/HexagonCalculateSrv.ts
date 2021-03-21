@@ -1,5 +1,5 @@
 import { hexagonMargin, HexagonOrientation, hexagonSize } from "../Helpers/Constants";
-import { HexagonPoints } from "../Types/HexagonTypes";
+import { HexagonPoint, HexagonPoints } from "../Types/HexagonTypes";
 
 function getPointySize(size: number = hexagonSize): number {
     return 2 * size;
@@ -9,8 +9,19 @@ function getFlatSize(size: number = hexagonSize): number {
     return Math.sqrt(3) * size;
 }
 
-function getSizeByFlatSize(flatSize: number): number {
+export function getSizeByFlatSize(flatSize: number): number {
     return flatSize / Math.sqrt(3);
+}
+
+export function initHexagonPoints(): HexagonPoints {
+    return {
+        point1: { x: 0, y: 0 },
+        point2: { x: 0, y: 0 },
+        point3: { x: 0, y: 0 },
+        point4: { x: 0, y: 0 },
+        point5: { x: 0, y: 0 },
+        point6: { x: 0, y: 0 },
+    }
 }
 
 function getPointyPointsAndMargin(containerWidth: number, containerHeight: number, size: number): [points: HexagonPoints, margin: number] {
@@ -46,7 +57,7 @@ function getPointyPointsAndMargin(containerWidth: number, containerHeight: numbe
     return [points, margin];
 }
 
-function getFlatPointsAndMargin(containerWidth: number, containerHeight: number, size: number): [points: HexagonPoints, margin: number] {
+export function getFlatPointsAndMargin(containerWidth: number, containerHeight: number, size: number): [points: HexagonPoints, margin: number] {
     const [width, height, offsetX, offsetY, margin] = getHexagonParams(containerWidth, containerHeight, size, HexagonOrientation.Flat);
     const points: HexagonPoints = {
         point1: {
@@ -98,10 +109,13 @@ function getHexagonParams(
     orientation: HexagonOrientation
 ): [width: number, height: number, offsetX: number, offsetY: number, margin: number] {
     let margin = size * hexagonMargin / 100;
-    let newSize = size - margin / 2; // the size without margin
+    let pointyMargin = (margin / 2) / (Math.cos(Math.PI / 6));
+    let newSize = size - pointyMargin; // the size without margin
     let [width, height] = getHexagonSize(newSize, orientation);
     let offsetX = (containerWidth - width) / 2;
     let offsetY = (containerHeight - height) / 2;
+    // fill in empty spaces because of svg stroke calculation inaccuracy
+    margin = margin + 1;
     return [width, height, offsetX, offsetY, margin];
 }
 
@@ -120,18 +134,18 @@ function getHexagonSize(size: number, orientation: HexagonOrientation): [width: 
     return result;
 }
 
-function getViewBoxValue(width: number, height: number): string {
+export function getViewBoxValue(width: number, height: number): string {
     return `0 0 ${width} ${height}`;
 }
 
-function getPointsStringify(points: HexagonPoints): string {
+export function getPointsStringify(points: HexagonPoints): string {
     const pointsStringify = Object.values(points).map(p => `${p.x},${p.y}`);
     return pointsStringify.join(" ");
 }
 
-const getFlatWidth = getPointySize;
-const getFlatHeight = getFlatSize;
-const getPointyWidth = getFlatSize;
-const getPointyHeight = getPointySize;
+export const getFlatWidth = getPointySize;
+export const getFlatHeight = getFlatSize;
+export const getPointyWidth = getFlatSize;
+export const getPointyHeight = getPointySize;
 
-export { getFlatWidth, getFlatHeight, getPointyWidth, getPointyHeight, getFlatPointsAndMargin, getViewBoxValue, getPointsStringify, getSizeByFlatSize };
+export default { getFlatWidth, getFlatHeight, getPointyWidth, getPointyHeight, initHexagonPoints, getFlatPointsAndMargin, getViewBoxValue, getPointsStringify, getSizeByFlatSize };

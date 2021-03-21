@@ -14,33 +14,6 @@ function createHexagonGrid(size: number): Array<HexagonCoordinates> {
     return result;
 }
 
-function setHexagonLocation(
-    items: Array<HexagonCoordinates>,
-    hexagonWidth: number,
-    hexagonHeight: number,
-    containerWidth: number,
-    containerHeight: number
-): Array<HexagonParams> {
-    const params: Array<HexagonParams> = new Array<HexagonParams>();
-    const hexGridCenterLocation: HexagonLocation = {
-        left: containerWidth / 2,
-        top: containerHeight / 2
-    };
-    const hexCenterOffset: HexagonLocation = {
-        left: hexagonWidth / 2,
-        top: hexagonWidth / 2
-    }
-
-    for (const item of items) {
-        const hexCenterleftFromHexGridCenter = item.x * hexagonWidth * 3 / 4;
-        const hexCentertopFromHexGridCenter = (-item.z + item.y) * hexagonHeight / 2;
-        const left = hexGridCenterLocation.left + hexCenterleftFromHexGridCenter - hexCenterOffset.left;
-        const top = hexGridCenterLocation.top + hexCentertopFromHexGridCenter - hexCenterOffset.top;
-        params.push({ ...item, left, top, value: 0 });
-    }
-    return params;
-}
-
 function createHexagonGridItems(
     size: number,
     hexagonWidth: number,
@@ -76,4 +49,4 @@ function getHexagonSize(gridSize: number): number {
     return getSizeByFlatSize(hexagonHeight);
 }
 
-export { createHexagonGrid, setHexagonLocation, createHexagonGridItems, getHexagonSize }
+export { createHexagonGrid, createHexagonGridItems, getHexagonSize }

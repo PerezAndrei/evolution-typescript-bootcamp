@@ -13,7 +13,7 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     hexagonSize: number = 0;
     hexagonWidth: number = 0;
     hexagonHeight: number = 0;
-    points: HexagonPoints = {};
+    points: HexagonPoints = hexagonCalculateSrv.initHexagonPoints();
     hexagonStrokeWidth: number = 0;
     viewBoxValue: string = "";
     pointsStringify: string = "";

@@ -46,7 +46,9 @@ code {
   animation-name: rotate;
   animation-duration: 0.7s;
 }
-
+body .hexagon-container .content .hex-item svg{
+  overflow: visible;
+}
 
 .hexagon-container .header{
   display: flex;

@@ -77,6 +77,7 @@ export const hexagonGridSizeMin = 2;
 export const randomCellsURL = "https://68f02c80-3bed-4e10-a747-4ff774ae905a.pub.instances.scw.cloud/";
 export const hexagonGridSizeMax = 20;
 export const maxHexValue = 2048;
+export const pointsTestPrecision = 5;
 //export const maxHexValue = 4;
 
 export type colorHSLValue = {
@@ -111,5 +112,6 @@ export default {
     BootstrapAlertType,
     HueRange: hueRange,
     SaturationRange: saturationRange,
-    LightnessRange: lightnessRange
+    LightnessRange: lightnessRange,
+    pointsTestPrecision
 };
