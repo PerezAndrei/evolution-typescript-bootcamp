@@ -72,6 +72,17 @@ body .hexagon-container .content .hex-item svg{
   width: 70px;
 }
 
+.game-error{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+}
+
+.game-error > div{
+  margin: 5px;;
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0) scale(1);

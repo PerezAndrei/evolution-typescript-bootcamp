@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Hex2048",
+  "name": "Game Hexagon 2048",
   "icons": [
     {
       "src": "favicon.ico",

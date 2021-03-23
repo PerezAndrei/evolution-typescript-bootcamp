@@ -4,10 +4,13 @@ import reportWebVitals from './reportWebVitals';
 import { HexagonGame } from './Components/HerxagonGame';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ErrorBoundary } from './Components/ErrorBoundary';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HexagonGame/>
+    <ErrorBoundary>
+      <HexagonGame />
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );

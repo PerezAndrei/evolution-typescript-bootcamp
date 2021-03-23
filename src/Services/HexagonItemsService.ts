@@ -1,4 +1,4 @@
-import { GameStatusValue, maxHexValue, ShiftDirection } from "../Helpers/Constants";
+import { ShiftDirection } from "../Helpers/Constants";
 import { HexagonCell, HexagonCoordinates, HexagonParams } from "../Types/HexagonTypes";
 
 export function getItems(
@@ -528,6 +528,3 @@ let sortYDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.y - hex1.y;
 
 let sortXAsc = (hex1: HexagonParams, hex2: HexagonParams) => hex1.x - hex2.x;
 let sortXDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.x - hex1.x;
-
-let sortZAsc = (hex1: HexagonParams, hex2: HexagonParams) => hex1.z - hex2.z;
-let sortZDesc = (hex1: HexagonParams, hex2: HexagonParams) => hex2.z - hex1.z;

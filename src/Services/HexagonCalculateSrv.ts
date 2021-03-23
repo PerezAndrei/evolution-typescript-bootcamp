@@ -1,5 +1,5 @@
 import { hexagonMargin, HexagonOrientation, hexagonSize } from "../Helpers/Constants";
-import { HexagonPoint, HexagonPoints } from "../Types/HexagonTypes";
+import { HexagonPoints } from "../Types/HexagonTypes";
 
 function getPointySize(size: number = hexagonSize): number {
     return 2 * size;
@@ -148,4 +148,17 @@ export const getFlatHeight = getFlatSize;
 export const getPointyWidth = getFlatSize;
 export const getPointyHeight = getPointySize;
 
-export default { getFlatWidth, getFlatHeight, getPointyWidth, getPointyHeight, initHexagonPoints, getFlatPointsAndMargin, getViewBoxValue, getPointsStringify, getSizeByFlatSize };
+const all = {
+    getFlatWidth,
+    getFlatHeight,
+    getPointyWidth,
+    getPointyHeight,
+    initHexagonPoints,
+    getFlatPointsAndMargin,
+    getPointyPointsAndMargin,
+    getViewBoxValue,
+    getPointsStringify,
+    getSizeByFlatSize
+};
+
+export default all;

@@ -1,8 +1,9 @@
+import { GameStatusValue } from "../Helpers/Constants"
 import { HexagonParams } from "./HexagonTypes"
 
 export type HexagonGameState = {
     hexagonGridSize: number;
-    gridItems: Array<HexagonParams>;
+    gameStatus: GameStatusValue;
 }
 
 export type GameControlState = {
@@ -16,4 +17,7 @@ export type HexagonGridState = {
 }
 
 export type HexagonState = {}
+export type ErrorBoundaryState = {
+    hasError: boolean;
+}
 

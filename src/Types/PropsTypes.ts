@@ -1,3 +1,4 @@
+import { GameStatusValue } from '../Helpers/Constants'
 import { HexagonParams } from './HexagonTypes'
 
 export type HexagonGameProps = {}
@@ -12,7 +13,7 @@ export type HexagonGridProps = {
 }
 
 export type GameStatusProps = {
-    gridItems: Array<HexagonParams>;
+    status: GameStatusValue;
 }
 
 export type HexagonProps = {
@@ -24,3 +25,5 @@ export type HexagonProps = {
     valuable: boolean;
     params: HexagonParams;
 }
+
+export type ErrorBoundaryProps = {}

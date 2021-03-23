@@ -8,7 +8,9 @@ export function addPercent(value: number | string): string {
     return `${value}${unit.percent}`;
 }
 
-export default {
+const all = {
     addPixel,
     addPercent
 }
+
+export default all;

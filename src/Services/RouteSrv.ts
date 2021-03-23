@@ -9,4 +9,8 @@ export function getCurrentGridSize(): number {
     return level;
 }
 
-export default { getCurrentGridSize }
+const all = { 
+    getCurrentGridSize 
+}
+
+export default all;

@@ -13,18 +13,21 @@ export function getAlertVariant(gameStatusValue: GameStatusValue): BootstrapAler
         case GameStatusValue.GameOver:
             bootstrapAlertType = BootstrapAlertType.Danger;
             break;
+        case GameStatusValue.Init:
+            bootstrapAlertType = BootstrapAlertType.Info;
+            break;
         default:
-            console.warn('Unknown GameStatusValue', gameStatusValue);
             bootstrapAlertType = BootstrapAlertType.None;
+            throw new Error(`Unknown GameStatusValue: "${gameStatusValue}"`);
     }
-    return bootstrapAlertType
+    return bootstrapAlertType;
 }
 
-export function getGameStatus(gridItems: Array<HexagonParams>): GameStatusValue {    
+export function getGameStatus(gridItems: Array<HexagonParams>): GameStatusValue {
     let result: GameStatusValue;
     let valuesAll = gridItems.map(i => i.value);
     let maxValue = Math.max(...valuesAll);
-    if(gridItems.length === 0){
+    if (gridItems.length === 0) {
         result = GameStatusValue.Playing;
     }
     else if (maxValue === maxHexValue) {

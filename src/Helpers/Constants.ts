@@ -22,13 +22,16 @@ export enum BootstrapAlertType {
     Secondary = "secondary",
     Success = "success",
     Danger = "danger",
+    Info = "info",
     None = ""
 }
 
 export enum GameStatusValue {
+    Init = "initialization",
     Playing = "playing",
     Win = "win",
-    GameOver = "game-over"
+    GameOver = "game-over",
+    Error = "error"
 }
 
 export enum RefreshGrid{
@@ -92,7 +95,7 @@ export const hueRange: colorComponentRange = { min: 155.2, max: 360 };
 export const saturationRange: colorComponentRange = { min: 60, max: 60 };
 export const lightnessRange: colorComponentRange = { min: 80, max: 50 };
 
-export default {
+const all = {
     unit,
     hexagonMargin,
     hexagonSize,
@@ -115,3 +118,5 @@ export default {
     LightnessRange: lightnessRange,
     pointsTestPrecision
 };
+
+export default all; 

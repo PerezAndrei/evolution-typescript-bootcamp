@@ -1,10 +1,11 @@
 import React from "react";
-import constants from "../Helpers/Constants";
+import constants, { GameStatusValue } from "../Helpers/Constants";
+import { getGameStatus } from "../Services/GameStatusService";
 import { HexagonParams } from "../Types/HexagonTypes";
 import { HexagonGameProps } from "../Types/PropsTypes";
 import { HexagonGameState } from "../Types/StateTypes";
 import { GameControl } from "./GameControl";
-import { GameStatus } from "./GameStatus";
+import GameStatus from "./GameStatus";
 import { HexagonGrid } from "./HexagonGrid";
 
 export class HexagonGame extends React.Component<HexagonGameProps, HexagonGameState> {
@@ -18,12 +19,12 @@ export class HexagonGame extends React.Component<HexagonGameProps, HexagonGameSt
 
     componentDidUpdate() {
         console.log("HexagonGame componentDidUpdate");
-    }
+    }    
 
     constructor(props: HexagonGameProps) {
         super(props);
         this.state = {
-            gridItems: [],
+            gameStatus: GameStatusValue.Init,
             hexagonGridSize: 0
         }
         this.hexGridSizeChangeHandler = this.hexGridSizeChangeHandler.bind(this);
@@ -31,18 +32,17 @@ export class HexagonGame extends React.Component<HexagonGameProps, HexagonGameSt
     }
 
     hexGridSizeChangeHandler(hexagonGridSize: number) {
-        console.log("onHexGridSizeChange", hexagonGridSize);
         if (this.state.hexagonGridSize !== hexagonGridSize)
             this.setState({ hexagonGridSize });
     }
 
     hexGridItemsChangeHandler(gridItems: Array<HexagonParams>) {
-        console.log("hexGridItemsChangeHandler", gridItems);
-        this.setState({ gridItems });
+        let gameStatusValue = getGameStatus(gridItems);
+        this.setState({ gameStatus: gameStatusValue });
     }
 
     render() {
-        let { gridItems, hexagonGridSize } = this.state;
+        let { gameStatus, hexagonGridSize } = this.state;
         return (
             <div className="hexagon-container">
                 <div style={this.headerStyle} className="header">
@@ -55,7 +55,7 @@ export class HexagonGame extends React.Component<HexagonGameProps, HexagonGameSt
                     />
                 </div>
                 <div style={this.footerStyle} className="footer">
-                    <GameStatus gridItems={gridItems} />
+                    <GameStatus status={gameStatus} />
                 </div>
             </div>
         )

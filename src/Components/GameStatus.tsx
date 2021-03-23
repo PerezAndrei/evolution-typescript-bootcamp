@@ -1,28 +1,23 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
-import { HexagonParams } from '../Types/HexagonTypes';
-import { GameStatusValue, BootstrapAlertType } from '../Helpers/Constants';
-import { getGameStatus, getAlertVariant } from '../Services/GameStatusService';
+import {FunctionComponent, PureComponent, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
+import { getAlertVariant } from '../Services/GameStatusService';
 import { GameStatusProps } from '../Types/PropsTypes';
+import { memo } from 'react';
 
-export const GameStatus: FunctionComponent<GameStatusProps> = (props: GameStatusProps) => {
-    const [gameStatus, setGameStatus] = useState({ value: GameStatusValue.Playing });
-    useEffect(() => { 
-        console.log("GameStatus useEffect");           
-        let gameStatusValue = getGameStatus(props.gridItems);
-        setGameStatus({value: gameStatusValue});
-    }, [gameStatus.value, props.gridItems]);
 
+const GameStatus: FunctionComponent<GameStatusProps> = (props: GameStatusProps) => {
     const variant = (): string => {
-        return getAlertVariant(gameStatus.value);
+        return getAlertVariant(props.status);
     }
 
     return (
         <Alert
-            data-status={gameStatus.value}
+            data-status={props.status}
             variant={variant()}
             className="game-status-alert">
-            <span>{gameStatus.value}</span>
+            <span>{props.status}</span>
         </Alert >
     );
 }
+
+export default memo(GameStatus); 

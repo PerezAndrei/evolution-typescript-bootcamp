@@ -62,7 +62,6 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
     onKeyDown(event: KeyboardEvent) {
         let direction = constants.keyboardCodeDirection.get(event.code);
         if (!!direction) {
-            console.log(constants.ShiftDirection[direction]);
             let [gridItems, hexagonItems, wasShifted] = shifttMergeItems(direction, this.props.hexagonGridSize, this.state.gridItems, this.state.hexagonItems);
             if (wasShifted) {
                 this.setState({
@@ -105,22 +104,38 @@ export class HexagonGrid extends React.Component<HexagonGridProps, HexagonGridSt
 
     refreshGrid(refreshType: RefreshGrid) {
         if (this.props.hexagonGridSize !== 0) {
+            let dataPromise: Promise<Array<HexagonCell> | void>;
+            let dataHandler: (data: Array<HexagonCell>) => void;            
             switch (refreshType) {
                 case RefreshGrid.Init:
-                    getRandomData([], this.props.hexagonGridSize).then(result => {
-                        this.initHexGrid(result);
-                    });
+                    dataPromise = getRandomData([], this.props.hexagonGridSize);
+                    dataHandler = this.initHexGrid;
                     break;
                 case RefreshGrid.Update:
                     let hexCells = hexParamsToCells(this.state.hexagonItems);
-                    getRandomData(hexCells, this.props.hexagonGridSize).then(result => {
-                        this.updateHexGrid(result);
-                    });
+                    dataPromise = getRandomData(hexCells, this.props.hexagonGridSize);
+                    dataHandler = this.updateHexGrid;
                     break;
                 default:
                     throw new Error(`Unknown RefreshGrid type: "${RefreshGrid[refreshType]}: ${refreshType}"`);
             }
+            dataHandler = dataHandler.bind(this);
+            dataPromise.then(result => {
+                console.log(result)
+                if(result){
+                    dataHandler(result);
+                }
+            }).catch((error) => {
+                console.log(error)
+                this.throwAsyncError(error);
+            });
         }
+    }
+
+    throwAsyncError(message: string) {
+        this.setState(() => {
+            throw new Error(message)
+        });
     }
 
     render() {
