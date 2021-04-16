@@ -9,7 +9,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             hasError: false
         }
     }
-
+    //test dev changes
     static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return { hasError: true }
     }
